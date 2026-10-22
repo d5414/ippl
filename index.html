@@ -1,0 +1,524 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <link rel="stylesheet" href="style.css">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Aksara</title>
+
+</head>
+<body>
+
+<header class="site-header">
+    <div class="header-top">
+        <a class="site-logo" href="#" onclick="showPage('page_home'); return false;">
+            Aksara
+            
+        </a>
+        <div class="header-actions" id="header_actions">
+            <button type="button" class="btn-header" onclick="showPage('page_login')">Login</button>
+            <button type="button" class="btn-header-solid" onclick="showPage('page_register')">Register</button>
+        </div>
+    </div>
+    <nav class="header-nav">
+        <ul>
+            <li><a href="#" id="nav_browse" onclick="showPage('page_home'); return false;">Browse</a></li>
+            <li><a href="#" id="nav_search" onclick="showPage('page_search'); return false;">Search</a></li>
+            <li><a href="#" id="nav_about" onclick="showPage('page_about'); return false;">About</a></li>
+            <li class="nav-search">
+                <input type="text" id="nav_search_input" placeholder="Search works...">
+                <button type="button" onclick="doNavSearch()">Search</button>
+            </li>
+        </ul>
+    </nav>
+</header>
+
+<div class="page active" id="page_home">
+    <div class="hero-banner" id="hero_guest">
+        <h1>A Digital Home for Writers &amp; Readers</h1>
+        <p>Aksara is a non-commercial platform that brings together writers and readers.
+        Discover stories, support creators, and be part of a growing literary community.</p>
+        <div class="hero-stats">
+            <span><strong>240</strong> works</span>
+            <span><strong>38</strong> authors</span>
+            <span><strong>512</strong> readers</span>
+        </div>
+        <div class="hero-actions">
+            <button type="button" class="btn-hero-primary" onclick="showPage('page_register')">Create Account</button>
+        </div>
+    </div>
+
+    <div class="container">
+        <div class="two-col" style="margin-top:16px">
+            <!-- Sidebar -->
+            <aside class="sidebar">
+                <div class="sidebar-box">
+                    <h3>Filter by Genre</h3>
+                    <ul id="genre_filter_list"></ul>
+                </div>
+                <div class="sidebar-box">
+                    <h3>Filter by Status</h3>
+                    <button type="button" class="filter-btn" id="filter_all" onclick="setStatusFilter('all')">All Works</button>
+                    <button type="button" class="filter-btn" id="filter_ongoing" onclick="setStatusFilter('ongoing')">Ongoing</button>
+                    <button type="button" class="filter-btn" id="filter_completed" onclick="setStatusFilter('completed')">Completed</button>
+                </div>
+                <div class="sidebar-box" id="sidebar_account" style="display:none">
+                    <h3>My Account</h3>
+                    <ul>
+                        <li><a href="#" onclick="showPage('page_profile'); return false;">Profile</a></li>
+                        <li id="nav_dashboard_link" style="display:none"><a href="#" onclick="showPage('page_dashboard'); return false;">Writer Dashboard</a></li>
+                        <li id="nav_register_writer_link" style="display:none"><a href="#" onclick="showPage('page_writer_reg'); return false;">Become a Writer</a></li>
+                        <li><a href="#" onclick="doLogout(); return false;">Logout</a></li>
+                    </ul>
+                </div>
+            </aside>
+
+            <!-- Main -->
+            <main class="main-content">
+                <div id="rec_banner" class="rec-banner" style="display:none"></div>
+
+                <h2 class="page-title" id="browse_title">Latest Works</h2>
+
+                <div id="work_list"></div>
+
+                <p id="no_results" style="display:none; font-family:Arial,sans-serif; color:var(--text-muted); font-size:13px;">
+                    No works found matching your criteria.
+                </p>
+            </main>
+        </div>
+    </div>
+</div>
+
+<div class="page" id="page_search">
+    <div class="container">
+        <h2 class="page-title">Search Works</h2>
+        <div class="search-bar-big">
+            <input type="text" id="search_input" placeholder="Search by title, author, or genre...">
+            <button type="button" onclick="doSearch()">Search</button>
+        </div>
+        <div id="search_results"></div>
+    </div>
+</div>
+
+<div class="page" id="page_about">
+    <div class="container" style="max-width:680px">
+        <div class="card">
+            <h2 class="page-title">About Aksara</h2>
+            <p>Aksara (from Sanskrit: <em>aksara</em>, meaning &ldquo;imperishable letter&rdquo;) is a digital ecosystem
+            that connects writers with readers. The platform is designed to make it easy for writers to manage
+            their works while building meaningful interaction with the reading community.</p>
+        </div>
+    </div>
+</div>
+
+<div class="page" id="page_login">
+    <div class="form-box">
+        <h2>Login</h2>
+        <div class="alert alert-error" id="login_alert"></div>
+        <div class="form-group">
+            <label for="login_email">Email</label>
+            <input type="email" id="login_email" placeholder="your@email.com">
+            <div class="form-error" id="login_email_err">Please enter a valid email.</div>
+        </div>
+        <div class="form-group">
+            <label for="login_password">Password</label>
+            <input type="password" id="login_password" placeholder="Password">
+            <div class="form-error" id="login_pass_err">Please enter your password.</div>
+        </div>
+        <div class="form-actions">
+            <button type="button" class="btn-primary" onclick="doLogin()">Login</button>
+        </div>
+        <div class="form-footer">
+            Don't have an account? <a href="#" onclick="showPage('page_register'); return false;">Register here</a>
+        </div>
+    </div>
+</div>
+
+<div class="page" id="page_register">
+    <div class="form-box" style="max-width:520px">
+        <h2>Create Account</h2>
+        <div class="alert alert-error" id="reg_alert"></div>
+        <div class="form-group">
+            <label for="reg_display_name">Display Name</label>
+            <input type="text" id="reg_display_name" placeholder="Your display name">
+            <div class="form-error" id="reg_name_err">Display name is required.</div>
+        </div>
+        <div class="form-group">
+            <label for="reg_username">Username</label>
+            <input type="text" id="reg_username" placeholder="lowercase, no spaces">
+            <div class="form-error" id="reg_username_err">Username must be 3-30 characters, lowercase.</div>
+        </div>
+        <div class="form-group">
+            <label for="reg_email">Email</label>
+            <input type="email" id="reg_email" placeholder="your@email.com">
+            <div class="form-error" id="reg_email_err">Please enter a valid email.</div>
+        </div>
+        <div class="form-group">
+            <label for="reg_password">Password</label>
+            <input type="password" id="reg_password" placeholder="Minimum 8 characters">
+            <div class="form-error" id="reg_pass_err">Password must be at least 8 characters.</div>
+        </div>
+        <div class="form-group">
+            <label for="reg_password2">Confirm Password</label>
+            <input type="password" id="reg_password2" placeholder="Re-enter password">
+            <div class="form-error" id="reg_pass2_err">Passwords do not match.</div>
+        </div>
+        <div class="form-actions">
+            <button type="button" class="btn-secondary" onclick="showPage('page_login')">Back to Login</button>
+            <button type="button" class="btn-primary" onclick="doRegister()">Create Account</button>
+        </div>
+        <div class="form-footer">
+            Already have an account? <a href="#" onclick="showPage('page_login'); return false;">Login here</a>
+        </div>
+    </div>
+</div>
+
+<div class="page" id="page_work_detail">
+    <div class="container">
+        <div class="two-col">
+            <aside class="sidebar">
+                <div class="sidebar-box" id="detail_chapter_list">
+                    <h3>Chapters</h3>
+                    <ul id="chapter_nav_list"></ul>
+                </div>
+            </aside>
+            <main class="main-content">
+                <div class="card" id="work_detail_card">
+                    <div style="margin-bottom:8px">
+                        <span id="detail_badge"></span>
+                        <span id="detail_genre_tag" class="tag" style="margin-left:4px"></span>
+                    </div>
+                    <h1 id="detail_title" style="font-size:22px; margin:0 0 6px 0; color:var(--primary)"></h1>
+                    <p id="detail_author" style="font-size:13px; font-family:Arial,sans-serif; color:var(--text-muted); margin:0 0 12px 0"></p>
+                    <p id="detail_synopsis" style="font-size:14px; line-height:1.7; border-top:1px solid var(--border); padding-top:12px"></p>
+                    <div id="detail_meta" style="font-size:12px; font-family:Arial,sans-serif; color:var(--text-muted); margin-top:10px"></div>
+                </div>
+            </main>
+        </div>
+    </div>
+</div>
+
+<div class="page" id="page_reading">
+    <div class="container">
+        <div class="reading-header">
+            <div style="font-size:12px; font-family:Arial,sans-serif; color:var(--text-muted); margin-bottom:4px">
+                <a href="#" id="reading_back_link" onclick="goBackToDetail(); return false;">← Back to Work</a>
+            </div>
+            <h1 id="reading_title"></h1>
+            <div class="chapter-info" id="reading_chapter_info"></div>
+        </div>
+
+        <div class="chapter-nav">
+            <button type="button" class="btn-secondary btn-small" id="btn_prev_chap" onclick="navigateChapter(-1)">← Previous Chapter</button>
+            <span id="chap_position"></span>
+            <button type="button" class="btn-secondary btn-small" id="btn_next_chap" onclick="navigateChapter(1)">Next Chapter →</button>
+        </div>
+
+        <div class="reading-body" id="reading_body"></div>
+
+        <div class="like-section">
+            <button type="button" class="btn-like" id="btn_like" onclick="toggleLike()">♥ Like this chapter</button>
+            <div style="font-size:12px; font-family:Arial,sans-serif; color:var(--text-muted); margin-top:6px" id="like_count_display"></div>
+        </div>
+
+        <div class="chapter-nav">
+            <button type="button" class="btn-secondary btn-small" id="btn_prev_chap2" onclick="navigateChapter(-1)">← Previous Chapter</button>
+            <span id="chap_position2"></span>
+            <button type="button" class="btn-secondary btn-small" id="btn_next_chap2" onclick="navigateChapter(1)">Next Chapter →</button>
+        </div>
+
+        <div class="comments-section">
+            <h3 class="section-title">Comments (<span id="comment_count">0</span>)</h3>
+            <div id="comment_list"></div>
+            <div class="comment-form">
+                <h4 style="margin:0 0 8px 0; font-size:13px; font-family:Arial,sans-serif;">Leave a Comment</h4>
+                <div id="comment_login_notice" style="font-size:13px; font-family:Arial,sans-serif; color:var(--text-muted); display:none">
+                    <a href="#" onclick="showPage('page_login'); return false;">Login</a> to leave a comment.
+                </div>
+                <div id="comment_form_area">
+                    <textarea id="comment_input" rows="3" placeholder="Write your comment here..."></textarea>
+                    <div class="form-actions">
+                        <button type="button" class="btn-primary btn-small" onclick="submitComment()">Post Comment</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="page" id="page_profile">
+    <div class="container">
+        <div class="profile-header">
+            <div class="profile-avatar" id="profile_avatar"></div>
+            <div class="profile-info">
+                <h2 id="profile_display_name"></h2>
+                <div class="profile-username" id="profile_username"></div>
+                <div style="margin-bottom:4px">
+                    <span id="profile_role_badge"></span>
+                    <span id="profile_status_badge" style="margin-left:4px"></span>
+                </div>
+                <div class="profile-meta" id="profile_meta"></div>
+            <p id="profile_bio" style="font-size:13px; color:var(--text); margin:8px 0 0; display:none;"></p>
+            </div>
+        </div>
+
+        <div id="profile_works_section">
+            <h3 class="section-title">Published Works</h3>
+            <div id="profile_works_list"></div>
+        </div>
+    </div>
+</div>
+
+<div class="page" id="page_dashboard">
+    <div class="container">
+        <h2 class="page-title">Writer Dashboard</h2>
+
+        <div class="dashboard-stats">
+            <div class="stat-card">
+                <span class="stat-num" id="stat_works">0</span>
+                <span class="stat-label">Works</span>
+            </div>
+            <div class="stat-card">
+                <span class="stat-num" id="stat_chapters">0</span>
+                <span class="stat-label">Chapters</span>
+            </div>
+            <div class="stat-card">
+                <span class="stat-num" id="stat_likes">0</span>
+                <span class="stat-label">Total Likes</span>
+            </div>
+            <div class="stat-card">
+                <span class="stat-num" id="stat_comments">0</span>
+                <span class="stat-label">Comments</span>
+            </div>
+        </div>
+
+        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:10px;">
+            <h3 class="section-title" style="margin:0; border:none;">My Works</h3>
+            <button type="button" class="btn-primary btn-small" onclick="openWorkModal(null)">+ Add Work</button>
+        </div>
+
+        <table class="work-table" id="dashboard_work_table">
+            <thead>
+                <tr>
+                    <th>Title</th>
+                    <th>Genre</th>
+                    <th>Status</th>
+                    <th>Chapters</th>
+                    <th>Updated</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody id="dashboard_work_tbody"></tbody>
+        </table>
+    </div>
+</div>
+
+<div class="page" id="page_writer_reg">
+    <div class="container" style="max-width:560px">
+        <h2 class="page-title">Become a Writer</h2>
+
+        <div class="step-indicator" id="reg_step_indicator">
+            <div class="step active" id="step1"><div class="step-num">1</div> Pen Name</div>
+            <div class="step-line"></div>
+            <div class="step" id="step2"><div class="step-num">2</div> Payment</div>
+            <div class="step-line"></div>
+            <div class="step" id="step3"><div class="step-num">3</div> Done</div>
+        </div>
+
+        <!-- Step 1 -->
+        <div id="writer_step1">
+            <div class="card">
+                <h3 class="section-title">Step 1: Writer Information</h3>
+                <div class="form-group">
+                    <label for="wr_pen_name">Pen Name</label>
+                    <input type="text" id="wr_pen_name" placeholder="Your pen name (can be same as display name)">
+                    <div class="form-error" id="wr_pen_err">Pen name is required.</div>
+                </div>
+                <div class="form-group">
+                    <label for="wr_genre">Primary Genre</label>
+                    <select id="wr_genre">
+                        <option value="">-- Select Genre --</option>
+                        <option>Fantasy</option>
+                        <option>Romance</option>
+                        <option>Mystery</option>
+                        <option>Horror</option>
+                        <option>Science Fiction</option>
+                        <option>Historical Fiction</option>
+                        <option>Slice of Life</option>
+                        <option>Adventure</option>
+                    </select>
+                    <div class="form-error" id="wr_genre_err">Please select a genre.</div>
+                </div>
+                <div class="form-group">
+                    <label for="wr_bio">Short Bio (optional)</label>
+                    <textarea id="wr_bio" rows="3" placeholder="Tell readers about yourself..."></textarea>
+                </div>
+                <div class="form-actions">
+                    <button type="button" class="btn-primary" onclick="writerStep2()">Next: Payment →</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Step 2 -->
+        <div id="writer_step2" style="display:none">
+            <div class="card">
+                <h3 class="section-title">Step 2: Registration Fee</h3>
+                <table style="width:100%; font-size:13px; font-family:Arial,sans-serif; border-collapse:collapse; margin-bottom:14px;">
+                    <tr>
+                        <td style="padding:6px 0; color:var(--text-muted)">Writer Registration Fee</td>
+                        <td style="text-align:right; font-weight:bold">Rp 50.000</td>
+                    </tr>
+                    <tr style="border-top:1px solid var(--border)">
+                        <td style="padding:6px 0; font-weight:bold">Total</td>
+                        <td style="text-align:right; font-weight:bold; color:var(--primary)">Rp 50.000</td>
+                    </tr>
+                </table>
+                <div class="form-group">
+                    <label for="wr_method">Payment Method</label>
+                    <select id="wr_method">
+                        <option value="">-- Select Payment Method --</option>
+                        <option value="transfer">Bank Transfer</option>
+                        <option value="ewallet">E-Wallet (GoPay / OVO / Dana)</option>
+                        <option value="va">Virtual Account</option>
+                    </select>
+                    <div class="form-error" id="wr_method_err">Please select a payment method.</div>
+                </div>
+                <div class="form-actions">
+                    <button type="button" class="btn-secondary" onclick="writerBackStep1()">← Back</button>
+                    <button type="button" class="btn-primary" onclick="writerConfirmPayment()">Confirm Payment</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Step 3 -->
+        <div id="writer_step3" style="display:none">
+            <div class="card" style="text-align:center; padding:32px;">
+                <div style="font-size:48px; margin-bottom:12px">✅</div>
+                <h3 style="color:var(--primary); margin:0 0 8px 0">Registration Successful!</h3>
+                <p style="font-family:Arial,sans-serif; font-size:13px; color:var(--text-muted); margin:0 0 6px 0">
+                    Your writer registration has been processed.
+                </p>
+                <p style="font-family:Arial,sans-serif; font-size:13px; color:var(--text-muted); margin:0 0 16px 0">
+                    Your account status is now: <strong class="badge badge-active">Writer Registration Active</strong>
+                </p>
+                <div id="wr_transaction_detail" style="background:var(--bg); border:1px solid var(--border); padding:10px; text-align:left; font-size:12px; font-family:Arial,sans-serif; margin-bottom:20px;"></div>
+                <button type="button" class="btn-primary" onclick="showPage('page_dashboard')">Go to Writer Dashboard</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal-overlay" id="modal_work">
+    <div class="modal-box">
+        <h3 id="modal_work_title">Add New Work</h3>
+        <div class="form-group">
+            <label for="modal_judul">Title</label>
+            <input type="text" id="modal_judul" placeholder="Work title">
+            <div class="form-error" id="modal_judul_err">Title is required.</div>
+        </div>
+        <div class="form-group">
+            <label for="modal_genre">Genre</label>
+            <select id="modal_genre">
+                <option value="">-- Select Genre --</option>
+                <option>Fantasy</option>
+                <option>Romance</option>
+                <option>Mystery</option>
+                <option>Horror</option>
+                <option>Science Fiction</option>
+                <option>Historical Fiction</option>
+                <option>Slice of Life</option>
+                <option>Adventure</option>
+            </select>
+            <div class="form-error" id="modal_genre_err">Genre is required.</div>
+        </div>
+        <div class="form-group">
+            <label for="modal_sinopsis">Synopsis</label>
+            <textarea id="modal_sinopsis" rows="4" placeholder="Brief synopsis..."></textarea>
+        </div>
+        <div class="form-group">
+            <label for="modal_status">Status</label>
+            <select id="modal_status">
+                <option value="ongoing">Ongoing</option>
+                <option value="completed">Completed</option>
+            </select>
+        </div>
+        <div class="modal-actions">
+            <button type="button" class="btn-secondary" onclick="closeWorkModal()">Cancel</button>
+            <button type="button" class="btn-primary" onclick="saveWork()">Save Work</button>
+        </div>
+    </div>
+</div>
+
+<div class="modal-overlay" id="modal_chapter">
+    <div class="modal-box">
+        <h3 id="modal_chap_title">Add Chapter</h3>
+        <div class="form-group">
+            <label for="modal_chap_judul">Chapter Title</label>
+            <input type="text" id="modal_chap_judul" placeholder="Chapter title">
+            <div class="form-error" id="modal_chap_err">Chapter title is required.</div>
+        </div>
+        <div class="form-group">
+            <label for="modal_chap_konten">Content</label>
+            <textarea id="modal_chap_konten" rows="8" placeholder="Write chapter content here..."></textarea>
+        </div>
+        <div class="modal-actions">
+            <button type="button" class="btn-secondary" onclick="closeChapterModal()">Cancel</button>
+            <button type="button" class="btn-primary" onclick="saveChapter()">Save Chapter</button>
+        </div>
+    </div>
+</div>
+
+<div class="modal-overlay" id="modal_delete">
+    <div class="modal-box" style="max-width:360px">
+        <h3>Confirm Delete</h3>
+        <p style="font-family:Arial,sans-serif; font-size:13px;" id="delete_confirm_msg">Are you sure you want to delete this item?</p>
+        <div class="modal-actions">
+            <button type="button" class="btn-secondary" onclick="closeDeleteModal()">Cancel</button>
+            <button type="button" class="btn-danger" id="delete_confirm_btn">Delete</button>
+        </div>
+    </div>
+</div>
+
+<footer class="site-footer">
+    <div class="footer-inner">
+        <div class="footer-col">
+            <h4>About Aksara</h4>
+            <ul>
+                <li><a href="#" onclick="showPage('page_about'); return false;">About the Platform</a></li>
+                <li><a href="#">Diversity Statement</a></li>
+                <li><a href="#">Terms of Service</a></li>
+                <li><a href="#">Content Policy</a></li>
+                <li><a href="#">Privacy Policy</a></li>
+            </ul>
+        </div>
+        <div class="footer-col">
+            <h4>For Writers</h4>
+            <ul>
+                <li><a href="#" onclick="showPage('page_writer_reg'); return false;">Become a Writer</a></li>
+                <li><a href="#" onclick="showPage('page_dashboard'); return false;">Writer Dashboard</a></li>
+                <li><a href="#">Writer Guidelines</a></li>
+            </ul>
+        </div>
+        <div class="footer-col">
+            <h4>Support</h4>
+            <ul>
+                <li><a href="#">Help Center</a></li>
+                <li><a href="#">Technical Support</a></li>
+                <li><a href="#">Report an Issue</a></li>
+            </ul>
+        </div>
+        <div class="footer-col">
+            <h4>Development</h4>
+            <ul>
+                <li><a href="#">aksara v0.1.0-mvp</a></li>
+                <li><a href="#">Known Limitations</a></li>
+            </ul>
+        </div>
+    </div>
+    <div class="footer-bottom">
+    </div>
+</footer>
+
+    <script src="script.js"></script>
+</body>
+</html>
