@@ -23,7 +23,7 @@ class RekomendasiKarya:
         
         if genre:
             return {
-                "label": f"Recommended for You (Because you like {genre})",
+                "label": f"Recommended for You\nBecause you like {genre}",
                 "daftar": self.rekomendasi_personal(genre)
             }
         
@@ -52,6 +52,6 @@ if __name__ == "__main__":
     ]
     data_like = [{"user_id": "USR-001", "genre": "Fantasy"}]
     rekomendasi = RekomendasiKarya(data_karya, data_like)
-    print("Pengguna: USR-001")
+    print("USR-001")
     hasil_personal = rekomendasi.dapatkan_rekomendasi("USR-001")
     print(rekomendasi.susun_tampilan(hasil_personal))
