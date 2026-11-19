@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Aksara - Registrasi</title>
+<link rel="stylesheet" href="registrasi.css">
+</head>
+<body>
+
+<header class="site-header">
+    <div class="header-top">
+        <span class="site-logo">Aksara</span>
+        <div class="header-actions">
+            <button type="button" class="btn-header deco" tabindex="-1">Login</button>
+            <button type="button" class="btn-header-solid deco" tabindex="-1">Register</button>
+        </div>
+    </div>
+    <nav class="header-nav" aria-label="Decorative navigation">
+        <ul>
+            <li><a class="deco" href="#" tabindex="-1">Browse</a></li>
+            <li><a class="deco" href="#" tabindex="-1">Search</a></li>
+            <li><a class="deco" href="#" tabindex="-1">About</a></li>
+            <li class="nav-search">
+                <input type="text" class="deco" placeholder="Search works..." readonly tabindex="-1">
+                <button type="button" class="deco" tabindex="-1">Search</button>
+            </li>
+        </ul>
+    </nav>
+</header>
+
+<main class="page active" id="page_register">
+    <form class="form-box" id="reg_form" novalidate>
+        <h2>Create Account</h2>
+
+        <div class="alert alert-error" id="reg_alert" role="status" aria-live="polite" tabindex="-1"></div>
+
+        <div class="form-group">
+            <label for="reg_display_name">Display Name</label>
+            <input type="text" id="reg_display_name" placeholder="Display name"
+                   autocomplete="name" maxlength="50" aria-required="true" aria-describedby="reg_name_err">
+            <div class="form-error" id="reg_name_err">Display name must be 2-50 characters and cannot contain symbols.</div>
+        </div>
+
+        <div class="form-group">
+            <label for="reg_username">Username</label>
+            <input type="text" id="reg_username" placeholder="Username"
+                   autocomplete="username" maxlength="30" autocapitalize="none" spellcheck="false"
+                   aria-required="true" aria-describedby="reg_username_err">
+            <div class="form-error" id="reg_username_err">Username must be 3-30 characters using letters and numbers only.</div>
+        </div>
+
+        <div class="form-group">
+            <label for="reg_email">Email</label>
+            <input type="email" id="reg_email" placeholder="Email address"
+                   autocomplete="email" maxlength="100" aria-required="true" aria-describedby="reg_email_err">
+            <div class="form-error" id="reg_email_err">Email is not valid.</div>
+        </div>
+
+        <div class="form-group">
+            <label for="reg_password">Password</label>
+            <div class="pass-wrap">
+                <input type="password" id="reg_password" placeholder="Create a password"
+                       autocomplete="new-password" aria-required="true"
+                       aria-describedby="pass_rules_title pass_rules reg_pass_err">
+                <button type="button" class="toggle-pass" data-target="reg_password"
+                        aria-pressed="false" aria-label="Show password">
+                    <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                        <path d="M1 12s4-7 11-7 11 7 11 7-4 7-11 7S1 12 1 12z"/>
+                        <circle cx="12" cy="12" r="3"/>
+                        <line class="eye-slash" x1="3" y1="3" x2="21" y2="21"/>
+                    </svg>
+                </button>
+            </div>
+            <div class="pass-rules-title" id="pass_rules_title">Your password must contain at least:</div>
+            <ul class="pass-rules" id="pass_rules" aria-labelledby="pass_rules_title">
+                <li data-rule="length">Password must be between 8 and 64 characters.</li>
+                <li data-rule="upper">1 uppercase letter</li>
+                <li data-rule="lower">1 lowercase letter</li>
+                <li data-rule="special">1 number or special character (example: # ? ! &amp;)</li>
+            </ul>
+            <div class="form-error" id="reg_pass_err">Password cannot contain spaces.</div>
+        </div>
+
+        <div class="form-group">
+            <label for="reg_password2">Confirm Password</label>
+            <div class="pass-wrap">
+                <input type="password" id="reg_password2" placeholder="Re-enter password"
+                       autocomplete="new-password" aria-required="true"
+                       aria-describedby="reg_pass2_err">
+                <button type="button" class="toggle-pass" data-target="reg_password2"
+                        aria-pressed="false" aria-label="Show confirmation password">
+                    <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                        <path d="M1 12s4-7 11-7 11 7 11 7-4 7-11 7S1 12 1 12z"/>
+                        <circle cx="12" cy="12" r="3"/>
+                        <line class="eye-slash" x1="3" y1="3" x2="21" y2="21"/>
+                    </svg>
+                </button>
+            </div>
+            <div class="form-error" id="reg_pass2_err">Passwords do not match.</div>
+        </div>
+
+        <div class="form-actions">
+            <button type="submit" class="btn-primary">Create Account</button>
+        </div>
+
+        <div class="form-footer">
+            Already have an account? <a class="deco" href="#" tabindex="-1">Login here</a>
+        </div>
+    </form>
+</main>
+
+<footer class="site-footer">
+    <div class="footer-inner">
+        <div class="footer-col">
+            <h4>About Aksara</h4>
+            <ul>
+                <li><a class="deco" href="#" tabindex="-1">About the Platform</a></li>
+                <li><a class="deco" href="#" tabindex="-1">Diversity Statement</a></li>
+                <li><a class="deco" href="#" tabindex="-1">Terms of Service</a></li>
+                <li><a class="deco" href="#" tabindex="-1">Content Policy</a></li>
+                <li><a class="deco" href="#" tabindex="-1">Privacy Policy</a></li>
+            </ul>
+        </div>
+        <div class="footer-col">
+            <h4>For Writers</h4>
+            <ul>
+                <li><a class="deco" href="#" tabindex="-1">Become a Writer</a></li>
+                <li><a class="deco" href="#" tabindex="-1">Writer Dashboard</a></li>
+                <li><a class="deco" href="#" tabindex="-1">Writer Guidelines</a></li>
+            </ul>
+        </div>
+        <div class="footer-col">
+            <h4>Support</h4>
+            <ul>
+                <li><a class="deco" href="#" tabindex="-1">Help Center</a></li>
+                <li><a class="deco" href="#" tabindex="-1">Technical Support</a></li>
+                <li><a class="deco" href="#" tabindex="-1">Report an Issue</a></li>
+            </ul>
+        </div>
+        <div class="footer-col">
+            <h4>Development</h4>
+            <ul>
+                <li><a class="deco" href="#" tabindex="-1">aksara v0.1.0-mvp</a></li>
+                <li><a class="deco" href="#" tabindex="-1">Known Limitations</a></li>
+            </ul>
+        </div>
+    </div>
+    <div class="footer-bottom"></div>
+</footer>
+
+<script src="registrasi.js"></script>
+</body>
+</html>
